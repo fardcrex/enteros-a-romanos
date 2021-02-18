@@ -12,7 +12,6 @@ main() {
 // print(intToRoman(25359)); ÑÑWCCCLIX
 }
 
-
 const map = {
   1: 'I',
   5: 'V',
@@ -46,10 +45,10 @@ String intToRomanFilter({int multiplicador, String numStr}) {
   final divisor = 10 * multiplicador;
 
   var res = 4 * multiplicador;
-  if ((numInt - res) % divisor == 0) return map[res / 4] + map[divisor / 2];
+  if ((numInt - res) % divisor == 0) return map[multiplicador] + map[divisor / 2];
 
   res = 9 * multiplicador;
-  if ((numInt - res) % divisor == 0) return map[res / 9] + map[divisor];
+  if ((numInt - res) % divisor == 0) return map[multiplicador] + map[divisor];
 
   res = 5 * multiplicador;
   if ((numInt - res) % divisor == 0) return map[res];
