@@ -4,10 +4,10 @@ import 'dart:math';
 //solución escalable 
 
 main() {  
-  print(intToRoman(1994)); //MCMXCIV
-  print(intToRoman(333)); //CCCXXXIII
-  print(intToRoman(444)); //CDXLIV
-  print(intToRoman(3999)); //MMMCMXCIX
+  print(intToRoman(3)); // III
+  print(intToRoman(58)); // LVIII
+  print(intToRoman(102)); // CII
+  print(intToRoman(1994)); // MCMXCIV
   
 // print(intToRoman(25359)); ÑÑWCCCLIX
 }
