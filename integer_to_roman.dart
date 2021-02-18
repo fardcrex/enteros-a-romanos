@@ -1,10 +1,15 @@
 import 'dart:math';
 
+//puedes probarlo en https://dartpad.dev/ solo copia el código de este archivo 
+//solución escalable 
+
 main() {  
   print(intToRoman(1994)); //MCMXCIV
   print(intToRoman(333)); //CCCXXXIII
   print(intToRoman(444)); //CDXLIV
   print(intToRoman(3999)); //MMMCMXCIX
+  
+// print(intToRoman(25359)); ÑÑWCCCLIX
 }
 
 
@@ -16,10 +21,12 @@ const map = {
   100: 'C',
   500: 'D',
   1000: 'M',
+ /* 5000: 'W',
+    10000:'Ñ'*/
 };
 
 String intToRoman(int numero) {
-  assert(1 <= numero && numero <= 3999);
+  assert(1 <= numero);
   final listNum = '$numero'.split('');
   final length = listNum.length;
   final listRomanos = List.generate(
