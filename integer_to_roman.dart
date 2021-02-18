@@ -27,33 +27,84 @@ const map = {
 String intToRoman(int numero) {
   assert(1 <= numero);
   final listNum = '$numero'.split('');
-  final length = listNum.length;
-  final listRomanos = List.generate(
-    length,
-    (index) => intToRomanFilter(
-      numStr: listNum[index],
-      multiplicador: pow(10, length - index - 1),
-    ),
-  );
 
+  final listRomanos = <String>[];
+  for (var i = 0; i < listNum.length; i++) {
+    listRomanos.add(NumberMultiple.when(
+      numStr: listNum[i],
+      multiplicador: pow(10, listNum.length - i - 1),
+    ).convertToRoman());
+  }
+
+  /*  final listRomanos = List.generate(
+    listNum.length,
+    (index) => NumberMultiple.when(
+      numStr: listNum[index],
+      multiplicador: pow(10, listNum.length - index - 1),
+    ).convertToRoman(),
+  ); */
   return listRomanos.join('');
 }
 
-String intToRomanFilter({int multiplicador, String numStr}) {
-  final intParse = int.parse(numStr);
-  final numInt = intParse * multiplicador;
-  final divisor = 10 * multiplicador;
+abstract class NumberMultiple {
+  final int multiplicador;
+  NumberMultiple(this.multiplicador);
+  factory NumberMultiple.when({int multiplicador, String numStr}) {
+    final decimalValue = int.parse(numStr);
 
-  var res = 4 * multiplicador;
-  if ((numInt - res) % divisor == 0) return map[multiplicador] + map[divisor / 2];
+    if (_isMultipleOf10kPlus4k(multiplicador, decimalValue)) return MultipleOf10kPlus4k(multiplicador);
+    if (_isMultipleOf10kPlus5k(multiplicador, decimalValue)) return MultipleOf10kPlus5k(multiplicador);
+    if (_isMultipleOf10kPlus9k(multiplicador, decimalValue)) return MultipleOf10kPlus9k(multiplicador);
+    if (_isMultipleOf10kPlus6kOr7kOr8k(multiplicador, decimalValue))
+      return MultipleOf10kPlus6kOr7kOr8k(multiplicador, decimalValue);
+    return MultipleOf10kPlus1kOr2kOr3k(multiplicador, decimalValue);
+  }
+  String convertToRoman();
 
-  res = 9 * multiplicador;
-  if ((numInt - res) % divisor == 0) return map[multiplicador] + map[divisor];
-
-  res = 5 * multiplicador;
-  if ((numInt - res) % divisor == 0) return map[res];
-
-  if (numInt > res) return map[res] + List.generate((intParse % 5), (_) => map[multiplicador]).join('');
-
-  return List.generate((intParse % 5), (_) => map[multiplicador]).join('');
+  static bool _isMultipleOf10kPlus4k(int multi, int decimalValue) => _isMultipleOf(4, multi, decimalValue);
+  static bool _isMultipleOf10kPlus5k(int multi, int decimalValue) => _isMultipleOf(5, multi, decimalValue);
+  static bool _isMultipleOf10kPlus9k(int multi, int decimalValue) => _isMultipleOf(9, multi, decimalValue);
+  static bool _isMultipleOf10kPlus6kOr7kOr8k(int multi, int decimalValue) =>
+      _isMultipleOf(6, multi, decimalValue) ||
+      _isMultipleOf(7, multi, decimalValue) ||
+      _isMultipleOf(8, multi, decimalValue);
+  static bool _isMultipleOf(int numk, int multi, int demalValue) => ((demalValue - numk) * multi) % (10 * multi) == 0;
 }
+
+class MultipleOf10kPlus4k extends NumberMultiple {
+  MultipleOf10kPlus4k(multiplicador) : super(multiplicador);
+
+  @override
+  String convertToRoman() => map[multiplicador] + map[multiplicador * 5];
+}
+
+class MultipleOf10kPlus9k extends NumberMultiple {
+  MultipleOf10kPlus9k(multiplicador) : super(multiplicador);
+
+  @override
+  String convertToRoman() => map[multiplicador] + map[multiplicador * 10];
+}
+
+class MultipleOf10kPlus5k extends NumberMultiple {
+  MultipleOf10kPlus5k(multiplicador) : super(multiplicador);
+
+  @override
+  String convertToRoman() => map[multiplicador * 5];
+}
+
+class MultipleOf10kPlus1kOr2kOr3k extends NumberMultiple {
+  final int numValue;
+  MultipleOf10kPlus1kOr2kOr3k(multiplicador, this.numValue) : super(multiplicador);
+
+  @override
+  String convertToRoman() => List.generate((numValue % 5), (_) => map[multiplicador]).join('');
+}
+
+class MultipleOf10kPlus6kOr7kOr8k extends NumberMultiple {
+  final int numValue;
+  MultipleOf10kPlus6kOr7kOr8k(multiplicador, this.numValue) : super(multiplicador);
+
+  @override
+  String convertToRoman() => map[multiplicador * 5] + List.generate((numValue % 5), (_) => map[multiplicador]).join('');
+}
+
