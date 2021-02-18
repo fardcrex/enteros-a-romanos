@@ -29,11 +29,13 @@ String intToRoman(int numero) {
   final listNum = '$numero'.split('');
   final length = listNum.length;
   final listRomanos = <String>[];
-  for (var i = 0; i < length; i++) {
-    listRomanos.add(NumberMultiple.when(
+  
+  for (var i = 0; i < listNum.length; i++) {
+    final numberMultiple = new NumberMultiple.when(
       numStr: listNum[i],
-      multiplicador: pow(10, length - i - 1),
-    ).convertToRoman());
+      multiplicador: pow(10, listNum.length - i - 1),
+    );
+    listRomanos.add(numberMultiple.convertToRoman());
   }
  
   return listRomanos.join('');
