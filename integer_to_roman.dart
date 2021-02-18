@@ -27,22 +27,15 @@ const map = {
 String intToRoman(int numero) {
   assert(1 <= numero);
   final listNum = '$numero'.split('');
-
+  final length = listNum.length;
   final listRomanos = <String>[];
-  for (var i = 0; i < listNum.length; i++) {
+  for (var i = 0; i < length; i++) {
     listRomanos.add(NumberMultiple.when(
       numStr: listNum[i],
-      multiplicador: pow(10, listNum.length - i - 1),
+      multiplicador: pow(10, length - i - 1),
     ).convertToRoman());
   }
-
-  /*  final listRomanos = List.generate(
-    listNum.length,
-    (index) => NumberMultiple.when(
-      numStr: listNum[index],
-      multiplicador: pow(10, listNum.length - index - 1),
-    ).convertToRoman(),
-  ); */
+ 
   return listRomanos.join('');
 }
 
