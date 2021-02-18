@@ -30,10 +30,10 @@ String intToRoman(int numero) {
   final length = listNum.length;
   final listRomanos = <String>[];
   
-  for (var i = 0; i < listNum.length; i++) {
+  for (var i = 0; i < length; i++) {
     final numberMultiple = new NumberMultiple.when(
       numStr: listNum[i],
-      multiplicador: pow(10, listNum.length - i - 1),
+      multiplicador: pow(10, length - i - 1),
     );
     listRomanos.add(numberMultiple.convertToRoman());
   }
