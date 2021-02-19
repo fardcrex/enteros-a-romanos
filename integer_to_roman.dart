@@ -1,7 +1,7 @@
 import 'dart:math';
 
 //puedes probarlo en https://dartpad.dev/ solo copia el código de este archivo 
-//solución escalable 
+//solución escalable y con el principio Abierto Cerrado de SOLID
 
 main() {  
   print(intToRoman(3)); // III
@@ -9,7 +9,7 @@ main() {
   print(intToRoman(102)); // CII
   print(intToRoman(1994)); // MCMXCIV
   
-// print(intToRoman(25359)); ÑÑWCCCLIX
+// print(intToRoman(25359)); // ÑÑWCCCLIX
 }
 
 const map = {
@@ -20,12 +20,12 @@ const map = {
   100: 'C',
   500: 'D',
   1000: 'M',
- /* 5000: 'W',
-    10000:'Ñ'*/
+ // 5000: 'W',
+ // 10000:'Ñ'
 };
 
 String intToRoman(int numero) {
-  assert(1 <= numero);
+  assert(1 <= numero && numero <=3999);
   final listNum = '$numero'.split('');
   final length = listNum.length;
   final listRomanos = <String>[];
@@ -45,25 +45,25 @@ abstract class NumberMultiple {
   final int multiplicador;
   NumberMultiple(this.multiplicador);
   factory NumberMultiple.when({int multiplicador, String numStr}) {
-    final decimalValue = int.parse(numStr);
+    final unitValue = int.parse(numStr);
 
-    if (_isMultipleOf10kPlus4k(multiplicador, decimalValue)) return MultipleOf10kPlus4k(multiplicador);
-    if (_isMultipleOf10kPlus5k(multiplicador, decimalValue)) return MultipleOf10kPlus5k(multiplicador);
-    if (_isMultipleOf10kPlus9k(multiplicador, decimalValue)) return MultipleOf10kPlus9k(multiplicador);
-    if (_isMultipleOf10kPlus6kOr7kOr8k(multiplicador, decimalValue))
-      return MultipleOf10kPlus6kOr7kOr8k(multiplicador, decimalValue);
-    return MultipleOf10kPlus1kOr2kOr3k(multiplicador, decimalValue);
+    if (_isMultipleOf10kPlus4k(multiplicador, unitValue)) return MultipleOf10kPlus4k(multiplicador);
+    if (_isMultipleOf10kPlus5k(multiplicador, unitValue)) return MultipleOf10kPlus5k(multiplicador);
+    if (_isMultipleOf10kPlus9k(multiplicador, unitValue)) return MultipleOf10kPlus9k(multiplicador);
+    if (_isMultipleOf10kPlus6kOr7kOr8k(multiplicador, unitValue))
+      return MultipleOf10kPlus6kOr7kOr8k(multiplicador, unitValue);
+    return MultipleOf10kPlus1kOr2kOr3k(multiplicador, unitValue);
   }
   String convertToRoman();
 
-  static bool _isMultipleOf10kPlus4k(int multi, int decimalValue) => _isMultipleOf(4, multi, decimalValue);
-  static bool _isMultipleOf10kPlus5k(int multi, int decimalValue) => _isMultipleOf(5, multi, decimalValue);
-  static bool _isMultipleOf10kPlus9k(int multi, int decimalValue) => _isMultipleOf(9, multi, decimalValue);
-  static bool _isMultipleOf10kPlus6kOr7kOr8k(int multi, int decimalValue) =>
-      _isMultipleOf(6, multi, decimalValue) ||
-      _isMultipleOf(7, multi, decimalValue) ||
-      _isMultipleOf(8, multi, decimalValue);
-  static bool _isMultipleOf(int numk, int multi, int demalValue) => ((demalValue - numk) * multi) % (10 * multi) == 0;
+  static bool _isMultipleOf10kPlus4k(int multi, int unitValue) => _isMultipleOf(4, multi, unitValue);
+  static bool _isMultipleOf10kPlus5k(int multi, int unitValue) => _isMultipleOf(5, multi, unitValue);
+  static bool _isMultipleOf10kPlus9k(int multi, int unitValue) => _isMultipleOf(9, multi, unitValue);
+  static bool _isMultipleOf10kPlus6kOr7kOr8k(int multi, int unitValue) =>
+      _isMultipleOf(6, multi, unitValue) ||
+      _isMultipleOf(7, multi, unitValue) ||
+      _isMultipleOf(8, multi, unitValue);
+  static bool _isMultipleOf(int numk, int multi, int unitValue) => ((unitValue - numk) * multi) % (10 * multi) == 0;
 }
 
 class MultipleOf10kPlus4k extends NumberMultiple {
